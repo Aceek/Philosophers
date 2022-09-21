@@ -6,7 +6,7 @@
 #    By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/21 14:37:12 by ilinhard          #+#    #+#              #
-#    Updated: 2022/09/20 07:49:48 by ilinhard         ###   ########.fr        #
+#    Updated: 2022/09/21 02:41:14 by ilinhard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME				=	philosophers
 
 HEAD				=	-I .
 
-SRCS				=	philosphers.c
+SRCS				=	philosphers.c utils.c initialisation.c
 
 OBJ					=	${SRCS:.c=.o}
 

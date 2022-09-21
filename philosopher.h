@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/21 04:52:26 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/21 06:04:50 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <pthread.h>
-# include <semaphore.h>
+# include <sys/time.h>
 
 # define INT_MAX 2147483647
 # define INT_MIN -2147483648
 
-struct s_conditions;
+struct	s_conditions;
 
 typedef struct s_philosopher
 {
@@ -32,9 +32,9 @@ typedef struct s_philosopher
 	int					eat_count;
 	int					lfork;
 	int					rfork;
+	pthread_t			thread_id;
 	struct s_conditions	*rules;
 }						t_philosopher;
-
 
 typedef struct s_conditions
 {

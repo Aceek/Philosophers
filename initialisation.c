@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:39:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/21 04:52:25 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/21 06:05:12 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	ft_mutex_init(t_conditions *rules)
 int	ft_philo_init(t_conditions *rules, int nb_philo)
 {
 	int	i;
+
 	rules->philo = malloc(sizeof(t_philosopher) * nb_philo);
 	if (!rules->philo)
 		return (1);

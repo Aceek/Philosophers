@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/21 02:42:56 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/21 06:04:56 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,12 @@ int	ft_atoi(char *str)
 	if (count > 10 || (nb * sig) < 0 || nb > INT_MAX)
 		return (-1);
 	return ((int)nb * sig);
+}
+
+long long	timestamp(void)
+{
+	static struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }

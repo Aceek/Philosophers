@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/22 07:20:17 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/22 07:41:03 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	ft_writing(t_philosopher *philo, int state)
 	ft_putnbr(philo->id);
 	write(1, " ", 1);
 	if (state == FORK)
-		write(1, "has taken a fork\n", 16);
+		write(1, "has taken a fork\n", 17);
 	else if (state == EATING)
 		write(1, "is eating\n", 10);
 	else if (state == SLEEPING)
@@ -89,5 +89,5 @@ void	ft_writing(t_philosopher *philo, int state)
 		write(1, "is thinking\n", 12);
 	else if (state == DIED)
 		write(1, "died\n", 5);
-	pthread_mutex_lock(&philo->rules->writing);
+	pthread_mutex_unlock(&philo->rules->writing);
 }

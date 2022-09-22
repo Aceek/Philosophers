@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 00:43:38 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/22 07:21:37 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/22 07:49:27 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	ft_eat(t_philosopher *philo, t_conditions *rules)
 	ft_writing(philo, FORK);
 	pthread_mutex_lock(&rules->forks[philo->rfork]);
 	ft_writing(philo, FORK);
-	// pthread_mutex_lock(&rules->m_eating);
+	pthread_mutex_lock(&rules->m_eating);
 	ft_writing(philo, EATING);
 	philo->time_last_meal = ft_get_time();
-	// pthread_mutex_unlock(&rules->m_eating);
+	pthread_mutex_unlock(&rules->m_eating);
 	ft_sleeping(rules->time_eat);
 	philo->eat_count++;
 	pthread_mutex_unlock(&rules->forks[philo->lfork]);
@@ -56,13 +56,15 @@ void	ft_state_check(t_philosopher *philo, t_conditions *rules)
 	while (!rules->state && i < rules->nb_philo)
 	{
 		pthread_mutex_lock(&rules->m_eating);
-		if (philo[i].time_last_meal - ft_get_time() < (rules->time_death))
+		if (ft_get_time() - philo[i].time_last_meal > (rules->time_death))
 		{
 			ft_writing(&philo[i], DIED);
 			rules->state = 1;
 		}
 		pthread_mutex_unlock(&rules->m_eating);
 		i++;
+		if (i + 1 == rules->nb_philo)
+			i = 0;
 	}
 }
 

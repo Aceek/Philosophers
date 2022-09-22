@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/22 06:51:47 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:25:39 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 struct	s_conditions;
 
-enum state
+enum e_state
 {
 	FORK,
 	EATING,
@@ -65,6 +65,6 @@ int			ft_parsing(char **av, t_conditions *rules);
 int			ft_mutex_init(t_conditions *rules);
 long long	ft_get_time(void);
 void		ft_writing(t_philosopher *philo, int state);
-void		ft_sleeping(int time);
+void		ft_sleeping(long long time, t_conditions *rules);
 
 #endif

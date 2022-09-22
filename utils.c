@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/22 07:41:03 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:27:01 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ long long	ft_get_time(void)
 void	ft_putnbr(long long nbr)
 {
 	char	c;
-	
+
 	if (nbr >= 0 && nbr <= 9)
 	{
 		c = nbr + '0';
@@ -65,29 +65,52 @@ void	ft_putnbr(long long nbr)
 	}
 }
 
-void	ft_sleeping(int time)
+void	ft_sleeping(long long time, t_conditions *rules)
 {
 	// while (died ???)
 	// si prog s'arrete pendant sleep ???
+	(void)rules;
 	usleep(time * 1000);
 }
 
+// void	ft_writing(t_philosopher *philo, int state)
+// {
+// 	pthread_mutex_lock(&philo->rules->writing);
+// 	ft_putnbr(ft_get_time() - philo->rules->first_timer);
+// 	write(1, " ", 1);
+// 	ft_putnbr(philo->id);
+// 	write(1, " ", 1);
+// 	if (state == FORK)
+// 		write(1, "has taken a fork\n", 17);
+// 	else if (state == EATING)
+// 		write(1, "is eating\n", 10);
+// 	else if (state == SLEEPING)
+// 		write(1, "is sleeping\n", 12);
+// 	else if (state == THINKING)
+// 		write(1, "is thinking\n", 12);
+// 	else if (state == DIED)
+// 		write(1, "died\n", 5);
+// 	pthread_mutex_unlock(&philo->rules->writing);
+// }
+
 void	ft_writing(t_philosopher *philo, int state)
 {
-	pthread_mutex_lock(&philo->rules->writing);
-	ft_putnbr(ft_get_time() - philo->rules->first_timer);
-	write(1, " ", 1);
-	ft_putnbr(philo->id);
-	write(1, " ", 1);
+	long long	time_diff;
+	char		*str;
+
+	pthread_mutex_unlock(&philo->rules->writing);
+	time_diff = ft_get_time() - philo->rules->first_timer;
 	if (state == FORK)
-		write(1, "has taken a fork\n", 17);
+		str = "has taken a fork\n";
 	else if (state == EATING)
-		write(1, "is eating\n", 10);
+		str = "is eating\n";
 	else if (state == SLEEPING)
-		write(1, "is sleeping\n", 12);
+		str = "is sleeping\n";
 	else if (state == THINKING)
-		write(1, "is thinking\n", 12);
+		str = "is thinking\n";
 	else if (state == DIED)
-		write(1, "died\n", 5);
+		str = "died\n";
+	pthread_mutex_lock(&philo->rules->writing);
+	printf("%lli %d %s", time_diff, philo->id, str);
 	pthread_mutex_unlock(&philo->rules->writing);
 }

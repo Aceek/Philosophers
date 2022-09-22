@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/22 04:23:51 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/22 06:51:47 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ typedef struct s_philosopher
 	int					eat_count;
 	int					lfork;
 	int					rfork;
-	int					state;
 	long long			time_last_meal;
 	pthread_t			thread_id;
 	struct s_conditions	*rules;
@@ -53,6 +52,7 @@ typedef struct s_conditions
 	int						time_eat;
 	int						time_sleep;
 	int						nb_eat;
+	int						state;
 	long long				first_timer;
 	struct s_philosopher	*philo;
 	pthread_mutex_t			m_eating;
@@ -64,5 +64,7 @@ int			ft_atoi(char *str);
 int			ft_parsing(char **av, t_conditions *rules);
 int			ft_mutex_init(t_conditions *rules);
 long long	ft_get_time(void);
+void		ft_writing(t_philosopher *philo, int state);
+void		ft_sleeping(int time);
 
 #endif

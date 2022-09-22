@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/22 05:11:25 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/22 07:20:17 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,16 @@ void	ft_putnbr(long long nbr)
 	}
 }
 
+void	ft_sleeping(int time)
+{
+	// while (died ???)
+	// si prog s'arrete pendant sleep ???
+	usleep(time * 1000);
+}
+
 void	ft_writing(t_philosopher *philo, int state)
 {
+	pthread_mutex_lock(&philo->rules->writing);
 	ft_putnbr(ft_get_time() - philo->rules->first_timer);
 	write(1, " ", 1);
 	ft_putnbr(philo->id);
@@ -81,4 +89,5 @@ void	ft_writing(t_philosopher *philo, int state)
 		write(1, "is thinking\n", 12);
 	else if (state == DIED)
 		write(1, "died\n", 5);
+	pthread_mutex_lock(&philo->rules->writing);
 }

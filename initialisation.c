@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:39:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/21 06:05:12 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/22 04:13:36 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	ft_philo_init(t_conditions *rules, int nb_philo)
 	while (i < nb_philo)
 	{
 		rules->philo[i].eating = 0;
+		rules->philo[i].state = 0;
 		rules->philo[i].time_last_meal = 0;
 		rules->philo[i].id = i;
 		rules->philo[i].lfork = i;

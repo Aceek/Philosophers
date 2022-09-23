@@ -6,11 +6,11 @@
 #    By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/21 14:37:12 by ilinhard          #+#    #+#              #
-#    Updated: 2022/09/23 05:17:33 by ilinhard         ###   ########.fr        #
+#    Updated: 2022/09/23 07:24:32 by ilinhard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME				=	philosophers
+NAME				=	philosphers
 
 HEAD				=	-I .
 
@@ -24,6 +24,7 @@ CFLAGS				=	-Wall -Werror -Wextra -g -pthread
 
 ${NAME}				:	${OBJ}
 					${CC} ${CFLAGS} ${OBJ} -o ${NAME}
+
 all					:	${NAME}
 
 .c.o				:

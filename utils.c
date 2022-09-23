@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/23 05:44:05 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/23 07:22:00 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ void	ft_writing(t_philosopher *philo, int state)
 		str = "is thinking\n";
 	else if (state == DIED)
 		str = "died\n";
-	printf("%lli %d %s", time_diff, philo->id, str);
+	if (philo->rules->state)
+		return ;
+	printf("%lli %d %s", time_diff, (philo->id + 1), str);
 	pthread_mutex_unlock(&philo->rules->writing);
 }
 

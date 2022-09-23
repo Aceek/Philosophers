@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:39:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/22 09:48:34 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/23 05:15:12 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int	ft_parsing(char **av, t_conditions *rules)
 	if (rules->nb_eat < 0)
 		return (1);
 	if (ft_mutex_init(rules))
-		return (write(2, "prob mutex init (need function)\n", 32), 1);
+		return (write(2, "prob mutex init\n", 16), 1);
 	if (ft_philo_init(rules, rules->nb_philo))
-		return (write(2, "prob philo init (need function)\n", 32), 1);
+		return (write(2, "prob philo init\n", 16), 1);
 	return (0);
 }

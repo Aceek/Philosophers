@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/23 04:32:53 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/23 05:44:05 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,31 +49,11 @@ long long	ft_get_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	ft_putnbr(long long nbr)
-{
-	char	c;
-
-	if (nbr >= 0 && nbr <= 9)
-	{
-		c = nbr + '0';
-		write(1, &c, 1);
-	}
-	if (nbr > 9)
-	{
-		ft_putnbr(nbr / 10);
-		ft_putnbr(nbr % 10);
-	}
-}
-
 void	ft_sleeping(long long time, t_conditions *rules)
 {
-	// while (died ???)
-	// si prog s'arrete pendant sleep ???
 	(void)rules;
 	usleep(time * 1000);
 }
-
-
 
 void	ft_writing(t_philosopher *philo, int state)
 {
@@ -94,4 +74,27 @@ void	ft_writing(t_philosopher *philo, int state)
 		str = "died\n";
 	printf("%lli %d %s", time_diff, philo->id, str);
 	pthread_mutex_unlock(&philo->rules->writing);
+}
+
+void	ft_cleaning(t_conditions *rules)
+{
+	int	i;
+
+	if (&rules->m_eating)
+		pthread_mutex_destroy(&rules->m_eating);
+	if (&rules->writing)
+		pthread_mutex_destroy(&rules->writing);
+	i = 0;
+	while (i < rules->nb_philo)
+	{
+		if (&rules->forks[i])
+			pthread_mutex_destroy(&rules->forks[i]);
+		if (rules->philo[i].thread_id)
+			pthread_join(rules->philo[i].thread_id, NULL);
+		i++;
+	}
+	if (rules->philo)
+		free(rules->philo);
+	if (rules->forks)
+		free(rules->forks);
 }

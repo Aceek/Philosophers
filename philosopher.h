@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/22 09:25:39 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/23 05:31:35 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,23 @@ typedef struct s_conditions
 	pthread_mutex_t			writing;
 }							t_conditions;
 
-int			ft_atoi(char *str);
+//-----------------------initialisation.c-----------------------//
 int			ft_parsing(char **av, t_conditions *rules);
+int			ft_philo_init(t_conditions *rules, int nb_philo);
 int			ft_mutex_init(t_conditions *rules);
-long long	ft_get_time(void);
+
+//-----------------------Philosopher.c--------------------------//
+void		ft_start(t_conditions *rules);
+void		ft_state_check(t_philosopher *philo, t_conditions *rules);
+int			ft_check_nb_eat(t_philosopher *philo, t_conditions *rules);
+void		*ft_routine(void *arg);
+void		ft_eat(t_philosopher *philo, t_conditions *rules);
+
+//-----------------------Utils.c-------------------------------//
+void		ft_cleaning(t_conditions *rules);
 void		ft_writing(t_philosopher *philo, int state);
 void		ft_sleeping(long long time, t_conditions *rules);
+long long	ft_get_time(void);
+int			ft_atoi(char *str);
 
 #endif

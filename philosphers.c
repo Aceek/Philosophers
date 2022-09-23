@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 00:43:38 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/23 04:27:35 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/23 05:43:17 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ void	*ft_routine(void *arg)
 	while (!rules->state)
 	{
 		ft_eat(philo, rules);
-		// if (rules->state)
-		// 	break ;
 		ft_writing(philo, SLEEPING);
 		ft_sleeping(rules->time_sleep, rules);
 		ft_writing(philo, THINKING);
@@ -82,9 +80,9 @@ void	ft_state_check(t_philosopher *philo, t_conditions *rules)
 		i++;
 		if (i + 1 >= rules->nb_philo)
 			i = 0;
-		usleep(50);
 		if (rules->nb_eat && ft_check_nb_eat(philo, rules))
 			rules->state = 1;
+		usleep(50);
 	}
 }
 
@@ -105,17 +103,4 @@ void	ft_start(t_conditions *rules)
 		i++;
 	}
 	ft_state_check(philo, rules);
-	// exit_launcher(...);
-}
-
-int	main(int ac, char **av)
-{
-	t_conditions	rules;
-
-	if (ac != 5 && ac != 6)
-		return (write(2, "Wrong numbers of args\n", 22), 1);
-	if (ft_parsing(av, &rules))
-		return (1);
-	ft_start(&rules); // protect ??
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/22 09:27:01 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/23 04:32:53 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,32 +73,14 @@ void	ft_sleeping(long long time, t_conditions *rules)
 	usleep(time * 1000);
 }
 
-// void	ft_writing(t_philosopher *philo, int state)
-// {
-// 	pthread_mutex_lock(&philo->rules->writing);
-// 	ft_putnbr(ft_get_time() - philo->rules->first_timer);
-// 	write(1, " ", 1);
-// 	ft_putnbr(philo->id);
-// 	write(1, " ", 1);
-// 	if (state == FORK)
-// 		write(1, "has taken a fork\n", 17);
-// 	else if (state == EATING)
-// 		write(1, "is eating\n", 10);
-// 	else if (state == SLEEPING)
-// 		write(1, "is sleeping\n", 12);
-// 	else if (state == THINKING)
-// 		write(1, "is thinking\n", 12);
-// 	else if (state == DIED)
-// 		write(1, "died\n", 5);
-// 	pthread_mutex_unlock(&philo->rules->writing);
-// }
+
 
 void	ft_writing(t_philosopher *philo, int state)
 {
 	long long	time_diff;
 	char		*str;
 
-	pthread_mutex_unlock(&philo->rules->writing);
+	pthread_mutex_lock(&philo->rules->writing);
 	time_diff = ft_get_time() - philo->rules->first_timer;
 	if (state == FORK)
 		str = "has taken a fork\n";
@@ -110,7 +92,6 @@ void	ft_writing(t_philosopher *philo, int state)
 		str = "is thinking\n";
 	else if (state == DIED)
 		str = "died\n";
-	pthread_mutex_lock(&philo->rules->writing);
 	printf("%lli %d %s", time_diff, philo->id, str);
 	pthread_mutex_unlock(&philo->rules->writing);
 }

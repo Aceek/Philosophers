@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 00:43:38 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/24 04:33:54 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/24 06:50:07 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,10 @@ void	ft_state_check(t_philosopher *philo, t_conditions *rules)
 		pthread_mutex_unlock(&rules->m_eating);
 		i++;
 		if (rules->nb_eat && ft_check_nb_eat(philo, rules))
+		{
 			rules->state = 1;
+			break ;
+		}
 		if (i + 1 >= rules->nb_philo)
 			i = 0;
 	}
@@ -108,4 +111,5 @@ void	ft_start(t_conditions *rules)
 		i++;
 	}
 	ft_state_check(philo, rules);
+	ft_cleaning(rules);
 }

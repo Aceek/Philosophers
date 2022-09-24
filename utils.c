@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/24 07:01:32 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/24 08:55:13 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,11 @@ void	ft_writing(t_philosopher *philo, int state)
 	else if (state == DIED)
 		str = "died\n";
 	if (philo->rules->state)
+	{
+		printf("%lli %d %s", time_diff, (philo->id + 1), str);
+		pthread_mutex_unlock(&philo->rules->writing);
 		return ;
+	}
 	printf("%lli %d %s", time_diff, (philo->id + 1), str);
 	pthread_mutex_unlock(&philo->rules->writing);
 }
@@ -89,6 +93,7 @@ void	ft_cleaning(t_conditions *rules)
 {
 	int	i;
 
+	usleep(15000);
 	if (&rules->m_eating)
 		pthread_mutex_destroy(&rules->m_eating);
 	if (&rules->writing)

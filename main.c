@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 05:17:18 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/24 05:39:35 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/24 07:50:17 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ int	main(int ac, char **av)
 	if (ft_parsing(av, &rules))
 		return (write(2, "Error parsing args / init args\n", 31), 1);
 	ft_start(&rules);
+	ft_cleaning(&rules);
 	return (0);
 }

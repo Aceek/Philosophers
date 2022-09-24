@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 00:43:38 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/24 08:54:36 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/24 09:33:02 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ void	ft_state_check(t_philosopher *philo, t_conditions *rules)
 		pthread_mutex_unlock(&rules->m_eating);
 		if (rules->nb_eat && ft_check_nb_eat(philo, rules))
 		{
-			break ;
 			rules->state = 1;
+			break ;
 		}
 		i++;
 		if (i + 1 >= rules->nb_philo)

@@ -6,16 +6,18 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 00:43:38 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/23 07:21:35 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/24 04:33:54 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	ft_eat(t_philosopher *philo, t_conditions *rules)
+int	ft_eat(t_philosopher *philo, t_conditions *rules)
 {
 	pthread_mutex_lock(&rules->forks[philo->lfork]);
 	ft_writing(philo, FORK);
+	if (rules->nb_philo < 2)
+		return (1);
 	pthread_mutex_lock(&rules->forks[philo->rfork]);
 	ft_writing(philo, FORK);
 	pthread_mutex_lock(&rules->m_eating);
@@ -26,6 +28,7 @@ void	ft_eat(t_philosopher *philo, t_conditions *rules)
 	philo->eat_count++;
 	pthread_mutex_unlock(&rules->forks[philo->lfork]);
 	pthread_mutex_unlock(&rules->forks[philo->rfork]);
+	return (0);
 }
 
 void	*ft_routine(void *arg)
@@ -39,7 +42,8 @@ void	*ft_routine(void *arg)
 		usleep(15000);
 	while (!rules->state)
 	{
-		ft_eat(philo, rules);
+		if (ft_eat(philo, rules))
+			return (NULL);
 		if (rules->state)
 			break ;
 		ft_writing(philo, SLEEPING);
@@ -80,11 +84,10 @@ void	ft_state_check(t_philosopher *philo, t_conditions *rules)
 		}
 		pthread_mutex_unlock(&rules->m_eating);
 		i++;
-		if (i + 1 >= rules->nb_philo)
-			i = 0;
 		if (rules->nb_eat && ft_check_nb_eat(philo, rules))
 			rules->state = 1;
-		usleep(50);
+		if (i + 1 >= rules->nb_philo)
+			i = 0;
 	}
 }
 

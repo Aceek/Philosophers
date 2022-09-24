@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/23 05:31:35 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/24 04:34:08 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ int			ft_mutex_init(t_conditions *rules);
 //-----------------------Philosopher.c--------------------------//
 void		ft_start(t_conditions *rules);
 void		ft_state_check(t_philosopher *philo, t_conditions *rules);
+int			ft_eat(t_philosopher *philo, t_conditions *rules);
 int			ft_check_nb_eat(t_philosopher *philo, t_conditions *rules);
 void		*ft_routine(void *arg);
-void		ft_eat(t_philosopher *philo, t_conditions *rules);
 
 //-----------------------Utils.c-------------------------------//
 void		ft_cleaning(t_conditions *rules);

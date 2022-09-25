@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/24 04:34:08 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/09/25 08:45:51 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <sys/types.h>
+# include <semaphore.h>
+# include <fcntl.h>
+# include <sys/stat.h>  
 
 # define INT_MAX 2147483647
 # define INT_MIN -2147483648
@@ -40,6 +44,7 @@ typedef struct s_philosopher
 	int					eat_count;
 	int					lfork;
 	int					rfork;
+	pid_t				process_id;
 	long long			time_last_meal;
 	pthread_t			thread_id;
 	struct s_conditions	*rules;
@@ -55,19 +60,19 @@ typedef struct s_conditions
 	int						state;
 	long long				first_timer;
 	struct s_philosopher	*philo;
-	pthread_mutex_t			m_eating;
-	pthread_mutex_t			*forks;
-	pthread_mutex_t			writing;
+	sem_t					m_eating;
+	sem_t					*forks;
+	sem_t					writing;
 }							t_conditions;
 
 //-----------------------initialisation.c-----------------------//
 int			ft_parsing(char **av, t_conditions *rules);
 int			ft_philo_init(t_conditions *rules, int nb_philo);
-int			ft_mutex_init(t_conditions *rules);
+int			ft_semaphore_init(t_conditions *rules);
 
 //-----------------------Philosopher.c--------------------------//
 void		ft_start(t_conditions *rules);
-void		ft_state_check(t_philosopher *philo, t_conditions *rules);
+void		ft_state_check(void *philo);
 int			ft_eat(t_philosopher *philo, t_conditions *rules);
 int			ft_check_nb_eat(t_philosopher *philo, t_conditions *rules);
 void		*ft_routine(void *arg);

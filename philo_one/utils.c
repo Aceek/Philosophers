@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/06 23:47:49 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/07 00:33:39 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,3 @@ void	ft_writing(t_philosopher *philo, int state)
 	printf("%lli %d %s", time_diff, (philo->id + 1), str);
 	pthread_mutex_unlock(&philo->rules->writing);
 }
-
-

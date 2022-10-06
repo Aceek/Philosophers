@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/24 09:33:52 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/06 23:47:49 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,26 +88,4 @@ void	ft_writing(t_philosopher *philo, int state)
 	pthread_mutex_unlock(&philo->rules->writing);
 }
 
-void	ft_cleaning(t_conditions *rules)
-{
-	int	i;
 
-	usleep(15000);
-	if (&rules->m_eating)
-		pthread_mutex_destroy(&rules->m_eating);
-	if (&rules->writing)
-		pthread_mutex_destroy(&rules->writing);
-	i = 0;
-	while (i < rules->nb_philo)
-	{
-		if (&rules->forks[i])
-			pthread_mutex_destroy(&rules->forks[i]);
-		if (&rules->philo[i].thread_id)
-			pthread_join(rules->philo[i].thread_id, NULL);
-		i++;
-	}
-	if (rules->philo)
-		free(rules->philo);
-	if (rules->forks)
-		free(rules->forks);
-}

@@ -6,11 +6,46 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:39:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/24 04:11:06 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/06 23:48:30 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
+
+void	ft_cleaning_mutex(t_conditions *rules)
+{
+	int	i;
+
+	if (&rules->m_eating)
+		pthread_mutex_destroy(&rules->m_eating);
+	if (&rules->writing)
+		pthread_mutex_destroy(&rules->writing);
+	i = 0;
+	while (i < rules->nb_philo)
+	{
+		if (&rules->forks[i])
+			pthread_mutex_destroy(&rules->forks[i]);
+		i++;
+	}
+	if (rules->philo)
+		free(rules->philo);
+	if (rules->forks)
+		free(rules->forks);
+}
+
+void	ft_cleaning(t_conditions *rules)
+{
+	int	i;
+
+	i = 0;
+	while (i < rules->nb_philo)
+	{
+		if (&rules->philo[i].thread_id)
+			pthread_join(rules->philo[i].thread_id, NULL);
+		i++;
+	}
+	ft_cleaning_mutex(rules);
+}
 
 int	ft_mutex_init(t_conditions *rules)
 {

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:39:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/25 09:39:12 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/07 01:15:12 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,18 @@ int	ft_semaphore_init(t_conditions *rules)
 	int				i;
 
 	i = 0;
-	// destroy potential old semaphore 
-
-	// init sema
-	rules->forks = ("forks_s", O_CREAT, S_IRWXU, rules->nb_philo);
-	rules->m_eating = ("east_s", O_CREAT, S_IRWXU, 1);
-	rules->writing = ("writing_s", O_CREAT, S_IRWXU, 1);
-
-	// verify init
+	if (sem_unlink("forks_s") < 0)
+		return (1);
+	if (sem_unlink("eat_s") < 0)
+		return (1);
+	if (sem_unlink("writing_s") < 0)
+		return (1);
+	rules->forks = sem_open("forks_s", O_CREAT, S_IRWXU, rules->nb_philo);
+	rules->m_eating = sem_open("eat_s", O_CREAT, S_IRWXU, 1);
+	rules->writing = sem_open("writing_s", O_CREAT, S_IRWXU, 1);
+	if (rules->forks == SEM_FAILED || rules->m_eating == SEM_FAILED
+		|| rules->writing == SEM_FAILED)
+		return (1);
 	return (0);
 }
 
@@ -41,8 +45,6 @@ int	ft_philo_init(t_conditions *rules, int nb_philo)
 		rules->philo[i].eating = 0;
 		rules->philo[i].time_last_meal = 0;
 		rules->philo[i].id = i;
-		rules->philo[i].lfork = i;
-		rules->philo[i].rfork = (i + 1) % nb_philo;
 		rules->philo[i].eat_count = 0;
 		rules->philo[i].rules = rules;
 		i++;

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosopher.c                                      :+:      :+:    :+:   */
+/*   philosphers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 07:40:04 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/25 08:02:55 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/07 01:18:06 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	ft_state_check(void *philo)
+void	*ft_state_check(void *philo)
 {
 	t_philosopher	*phi;
 	t_conditions	*rules;
@@ -21,13 +21,14 @@ void	ft_state_check(void *philo)
 	rules = phi->rules;
 	while (!rules->state)
 	{
-		if (ft_get_time() - phi->time_last_meal > rules->time_death)
+		if ((ft_get_time() - phi->time_last_meal) > rules->time_death)
 		{
 			ft_writing(philo, DIED);
 			rules->state = 1;
 			break ;
 		}
 	}
+	return (NULL);
 }
 
 void	ft_create_process(t_philosopher *philo)
@@ -42,9 +43,9 @@ void	ft_create_process(t_philosopher *philo)
 	while (!rules->state)
 	{
 		if (ft_eat(philo, rules))
-			return (NULL);
+			return ;
 		if (rules->state)
-			return (NULL);
+			return ;
 		ft_writing(philo, SLEEPING);
 		ft_sleeping(rules->time_sleep, rules);
 		ft_writing(philo, THINKING);
@@ -65,9 +66,9 @@ void	ft_start(t_conditions *rules)
 	{
 		phi[i].process_id = fork(); 
 		if (phi[i].process_id < 0)
-			return (1);
-		if (phi[i].process_id < 0)
+			return ;
+		if (phi[i].process_id == 0)
 			ft_create_process(&phi[i]);
 	}
-	return (0);
+	return ;
 }

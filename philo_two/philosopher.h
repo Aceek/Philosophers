@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/25 08:45:51 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/07 01:14:41 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ typedef struct s_philosopher
 	int					eating;
 	int					id;
 	int					eat_count;
-	int					lfork;
-	int					rfork;
 	pid_t				process_id;
 	long long			time_last_meal;
 	pthread_t			thread_id;
@@ -60,9 +58,9 @@ typedef struct s_conditions
 	int						state;
 	long long				first_timer;
 	struct s_philosopher	*philo;
-	sem_t					m_eating;
+	sem_t					*m_eating;
 	sem_t					*forks;
-	sem_t					writing;
+	sem_t					*writing;
 }							t_conditions;
 
 //-----------------------initialisation.c-----------------------//
@@ -72,7 +70,7 @@ int			ft_semaphore_init(t_conditions *rules);
 
 //-----------------------Philosopher.c--------------------------//
 void		ft_start(t_conditions *rules);
-void		ft_state_check(void *philo);
+void		*ft_state_check(void *philo);
 int			ft_eat(t_philosopher *philo, t_conditions *rules);
 int			ft_check_nb_eat(t_philosopher *philo, t_conditions *rules);
 void		*ft_routine(void *arg);

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 00:43:38 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/25 07:19:38 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/08 06:12:59 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	ft_eat(t_philosopher *philo, t_conditions *rules)
 	pthread_mutex_unlock(&rules->m_eating);
 	ft_sleeping(rules->time_eat, rules);
 	philo->eat_count++;
+	ft_writing(philo, SLEEPING);
 	pthread_mutex_unlock(&rules->forks[philo->lfork]);
 	pthread_mutex_unlock(&rules->forks[philo->rfork]);
 	return (0);
@@ -49,7 +50,6 @@ void	*ft_routine(void *arg)
 			return (NULL);
 		if (rules->state)
 			return (NULL);
-		ft_writing(philo, SLEEPING);
 		ft_sleeping(rules->time_sleep, rules);
 		ft_writing(philo, THINKING);
 	}

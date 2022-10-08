@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 05:17:18 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/07 00:43:52 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/08 07:04:47 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int ac, char **av)
 	if (ft_parsing(av, &rules))
 	{
 		write(2, "Error parsing args / init args\n", 31);
-		ft_cleaning_mutex(&rules);
+		// ft_cleaning_mutex(&rules);
 		return (1);
 	}
 	ft_start(&rules);

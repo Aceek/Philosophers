@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/08 04:50:39 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/08 05:29:10 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,18 +87,18 @@ void	ft_writing(t_philosopher *philo, int state)
 void	ft_exit_clean(t_conditions *rules)
 {
 	int				i;
-	int				ret;
 	t_philosopher	*philo;
 
 	i = 0;
 	philo = rules->philo;
-	waitpid(-1, &ret, 0);
+	// waitpid(-1, NULL, 0);
 	while (i < rules->nb_philo)
 	{
 		kill(philo[i].process_id, SIGKILL);
 		i++;
 	}
 	sem_close(rules->writing);
+	sem_close(rules->test);
 	sem_close(rules->m_eating);
 	sem_close(rules->forks);
 	free(philo);

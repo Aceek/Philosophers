@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/08 00:51:59 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/08 05:18:42 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_conditions
 	int						state;
 	long long				first_timer;
 	struct s_philosopher	*philo;
+	sem_t					*test;
 	sem_t					*m_eating;
 	sem_t					*forks;
 	sem_t					*writing;

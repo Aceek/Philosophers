@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 07:40:04 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/08 05:16:38 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/08 05:23:38 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ void	*ft_state_check(void *philo)
 		if ((ft_get_time() - phi->time_last_meal) > rules->time_death)
 		{
 			ft_writing(philo, DIED);
+			sem_post(rules->test);
 			// rules->state = 1;
-			exit (0);
+			// exit (0);
 		}
 		sem_post(rules->m_eating);
 		usleep(50);

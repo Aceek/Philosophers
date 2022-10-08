@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:39:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/08 05:17:06 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/08 05:27:22 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ int	ft_semaphore_init(t_conditions *rules)
 	sem_unlink("forks_s");
 	sem_unlink("eat_s");
 	sem_unlink("writing_s");
-	sem_unlink("test");
+	sem_unlink("test_s");
 	rules->forks = sem_open("forks_s", O_CREAT, S_IRWXU, rules->nb_philo);
-	// rules->test = sem_open("test_s", O_CREAT, S_IRWXU, 1);
+	rules->test = sem_open("test_s", O_CREAT, S_IRWXU, 1);
 	rules->m_eating = sem_open("eat_s", O_CREAT, S_IRWXU, 1);
 	rules->writing = sem_open("writing_s", O_CREAT, S_IRWXU, 1);
 	if (rules->forks == SEM_FAILED || rules->m_eating == SEM_FAILED
-		|| rules->writing == SEM_FAILED)
+		|| rules->writing == SEM_FAILED || rules->test == SEM_FAILED)
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:39:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/07 01:15:12 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/08 05:17:06 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,12 @@
 
 int	ft_semaphore_init(t_conditions *rules)
 {
-	int				i;
-
-	i = 0;
-	if (sem_unlink("forks_s") < 0)
-		return (1);
-	if (sem_unlink("eat_s") < 0)
-		return (1);
-	if (sem_unlink("writing_s") < 0)
-		return (1);
+	sem_unlink("forks_s");
+	sem_unlink("eat_s");
+	sem_unlink("writing_s");
+	sem_unlink("test");
 	rules->forks = sem_open("forks_s", O_CREAT, S_IRWXU, rules->nb_philo);
+	// rules->test = sem_open("test_s", O_CREAT, S_IRWXU, 1);
 	rules->m_eating = sem_open("eat_s", O_CREAT, S_IRWXU, 1);
 	rules->writing = sem_open("writing_s", O_CREAT, S_IRWXU, 1);
 	if (rules->forks == SEM_FAILED || rules->m_eating == SEM_FAILED
@@ -69,7 +65,7 @@ int	ft_parsing(char **av, t_conditions *rules)
 	if (rules->nb_eat < 0)
 		return (1);
 	if (ft_semaphore_init(rules))
-		return (write(2, "prob mutex init\n", 16), 1);
+		return (write(2, "prob semaphores init\n", 21), 1);
 	if (ft_philo_init(rules, rules->nb_philo))
 		return (write(2, "prob philo init\n", 16), 1);
 	return (0);

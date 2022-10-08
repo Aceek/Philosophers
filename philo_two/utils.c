@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/09/24 09:33:52 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/08 04:50:39 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_writing(t_philosopher *philo, int state)
 	long long	time_diff;
 	char		*str;
 
-	pthread_mutex_lock(&philo->rules->writing);
+	sem_wait(philo->rules->writing);
 	time_diff = ft_get_time() - philo->rules->first_timer;
 	if (state == FORK)
 		str = "has taken a fork\n";
@@ -79,35 +79,27 @@ void	ft_writing(t_philosopher *philo, int state)
 		str = "is thinking\n";
 	else if (state == DIED)
 		str = "died\n";
-	if (philo->rules->state)
-	{
-		pthread_mutex_unlock(&philo->rules->writing);
-		return ;
-	}
 	printf("%lli %d %s", time_diff, (philo->id + 1), str);
-	pthread_mutex_unlock(&philo->rules->writing);
+	if (state != DIED)
+		sem_post(philo->rules->writing);
 }
 
-void	ft_cleaning(t_conditions *rules)
+void	ft_exit_clean(t_conditions *rules)
 {
-	int	i;
+	int				i;
+	int				ret;
+	t_philosopher	*philo;
 
-	usleep(15000);
-	if (&rules->m_eating)
-		pthread_mutex_destroy(&rules->m_eating);
-	if (&rules->writing)
-		pthread_mutex_destroy(&rules->writing);
 	i = 0;
+	philo = rules->philo;
+	waitpid(-1, &ret, 0);
 	while (i < rules->nb_philo)
 	{
-		if (&rules->forks[i])
-			pthread_mutex_destroy(&rules->forks[i]);
-		if (&rules->philo[i].thread_id)
-			pthread_join(rules->philo[i].thread_id, NULL);
+		kill(philo[i].process_id, SIGKILL);
 		i++;
 	}
-	if (rules->philo)
-		free(rules->philo);
-	if (rules->forks)
-		free(rules->forks);
+	sem_close(rules->writing);
+	sem_close(rules->m_eating);
+	sem_close(rules->forks);
+	free(philo);
 }

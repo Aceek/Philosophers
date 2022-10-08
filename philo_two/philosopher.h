@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/07 01:14:41 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/08 00:51:59 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@
 # include <sys/types.h>
 # include <semaphore.h>
 # include <fcntl.h>
-# include <sys/stat.h>  
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <signal.h>
 
 # define INT_MAX 2147483647
 # define INT_MIN -2147483648
@@ -71,12 +73,12 @@ int			ft_semaphore_init(t_conditions *rules);
 //-----------------------Philosopher.c--------------------------//
 void		ft_start(t_conditions *rules);
 void		*ft_state_check(void *philo);
-int			ft_eat(t_philosopher *philo, t_conditions *rules);
+void		ft_eat(t_philosopher *philo ,t_conditions *rules);
 int			ft_check_nb_eat(t_philosopher *philo, t_conditions *rules);
 void		*ft_routine(void *arg);
 
 //-----------------------Utils.c-------------------------------//
-void		ft_cleaning(t_conditions *rules);
+void		ft_exit_clean(t_conditions *rules);
 void		ft_writing(t_philosopher *philo, int state);
 void		ft_sleeping(long long time, t_conditions *rules);
 long long	ft_get_time(void);

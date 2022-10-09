@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 07:40:04 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/08 05:23:38 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/09 06:59:00 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,27 @@ void	*ft_state_check(void *philo)
 {
 	t_philosopher	*phi;
 	t_conditions	*rules;
+	// int				done;
 
 	phi = (t_philosopher *)philo;
 	rules = phi->rules;
+	// done = 0;
 	while (!rules->state)
 	{
 		sem_wait(rules->m_eating);
-		if (rules->m_eating == 0)
-			printf("oui\n");
 		if ((ft_get_time() - phi->time_last_meal) > rules->time_death)
 		{
 			ft_writing(philo, DIED);
-			sem_post(rules->test);
+			sem_post(rules->ending);
 			// rules->state = 1;
 			// exit (0);
 		}
 		sem_post(rules->m_eating);
+		// if (!done && rules->nb_eat && phi->eat_count >= rules->nb_eat)
+		// {
+		// 	sem_post(rules->all_eat);
+		// 	done = 1;
+		// }
 		usleep(50);
 	}
 	return (NULL);
@@ -45,6 +50,7 @@ void	ft_eat(t_philosopher *philo ,t_conditions *rules)
 	ft_writing(philo, FORK);
 	sem_wait(rules->m_eating);
 	ft_writing(philo, EATING);
+	philo->eat_count += 1;
 	philo->time_last_meal = ft_get_time();
 	sem_post(rules->m_eating);
 	ft_sleeping(rules->time_eat, rules);
@@ -57,8 +63,10 @@ void	ft_create_process(t_philosopher *philo)
 	t_conditions *rules;
 
 	rules = philo->rules;
+	// sem_wait(rules->all_eat);
 	philo->time_last_meal = ft_get_time();
 	pthread_create(&(philo->thread_id), NULL, &ft_state_check, (void *)philo);
+	// verif thread init
 	pthread_detach(philo->thread_id);
 	if (philo->id % 2)
 		usleep(15000);
@@ -74,6 +82,27 @@ void	ft_create_process(t_philosopher *philo)
 	// free(philo);
 	// pthread_join(philo->thread_id, NULL);
 	exit (0);
+}
+
+void	*ft_check_eat_count(void *conditions)
+{
+	int	i;
+	t_conditions *rules;
+
+	rules = (t_conditions *)conditions;
+	i = -1;
+	while (++i < rules->nb_philo)
+	{
+		sem_wait(rules->all_eat);
+		i++;
+		if (rules->state || i >= rules->nb_philo)
+		{
+			sem_post(rules->ending);
+			return (NULL);
+		}
+		usleep(50);
+	}
+	return (NULL);
 }
 
 
@@ -94,5 +123,7 @@ void	ft_start(t_conditions *rules)
 			ft_create_process(&phi[i]);
 		i++;
 	}
+	// pthread_create(&(rules->t_eat), NULL, &ft_check_eat_count, (void *)rules);
+	//verif thread init
 	return ;
 }

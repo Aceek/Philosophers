@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/08 05:29:10 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/09 06:52:49 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,10 @@ void	ft_exit_clean(t_conditions *rules)
 		kill(philo[i].process_id, SIGKILL);
 		i++;
 	}
+	// pthread_join(rules->t_eat, NULL);
 	sem_close(rules->writing);
-	sem_close(rules->test);
+	sem_close(rules->ending);
+	sem_close(rules->all_eat);
 	sem_close(rules->m_eating);
 	sem_close(rules->forks);
 	free(philo);

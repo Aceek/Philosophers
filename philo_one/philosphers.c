@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 00:43:38 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/08 06:12:59 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/09 05:42:40 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	ft_state_check(t_philosopher *philo, t_conditions *rules)
 	int	i;
 
 	i = 0;
-	while (!rules->state && i < rules->nb_philo)
+	while (!rules->state)
 	{
 		pthread_mutex_lock(&rules->m_eating);
 		if (ft_get_time() - philo[i].time_last_meal > (rules->time_death))
@@ -109,7 +109,12 @@ void	ft_start(t_conditions *rules)
 	{
 		if (pthread_create(&(philo[i].thread_id),
 				NULL, &ft_routine, &(philo[i])))
+		{
+			rules->state = 1;
+			write(2, "Threads create probs\n", 21);
 			return ;
+		}
+		rules->verify_cleaning->thread_c++;
 		philo[i].time_last_meal = ft_get_time();
 		i++;
 	}

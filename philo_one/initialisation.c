@@ -6,46 +6,11 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:39:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/08 07:03:46 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/09 05:40:13 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
-
-void	ft_cleaning_mutex(t_conditions *rules)
-{
-	int	i;
-
-	if (&rules->m_eating)
-		pthread_mutex_destroy(&rules->m_eating);
-	if (&rules->writing)
-		pthread_mutex_destroy(&rules->writing);
-	i = 0;
-	while (i < rules->nb_philo)
-	{
-		if (&rules->forks[i])
-			pthread_mutex_destroy(&rules->forks[i]);
-		i++;
-	}
-	if (rules->philo)
-		free(rules->philo);
-	if (rules->forks)
-		free(rules->forks);
-}
-
-void	ft_cleaning(t_conditions *rules)
-{
-	int	i;
-
-	i = 0;
-	while (i < rules->nb_philo)
-	{
-		if (&rules->philo[i].thread_id)
-			pthread_join(rules->philo[i].thread_id, NULL);
-		i++;
-	}
-	ft_cleaning_mutex(rules);
-}
 
 int	ft_mutex_init(t_conditions *rules)
 {
@@ -54,16 +19,20 @@ int	ft_mutex_init(t_conditions *rules)
 	rules->forks = malloc(sizeof(pthread_mutex_t) * rules->nb_philo);
 	if (!rules->forks)
 		return (1);
-	i = rules->nb_philo;
-	while (--i >= 0)
+	rules->verify_cleaning->malloc_forks_c = 1;
+	i = -1;
+	while (++i < rules->nb_philo)
 	{
 		if (pthread_mutex_init(&rules->forks[i], NULL))
 			return (1);
+		rules->verify_cleaning->forks_c += 1;
 	}
 	if (pthread_mutex_init(&rules->writing, NULL))
 		return (1);
+	rules->verify_cleaning->writing_c = 1;
 	if (pthread_mutex_init(&rules->m_eating, NULL))
 		return (1);
+	rules->verify_cleaning->eating_c = 1;
 	return (0);
 }
 
@@ -74,6 +43,7 @@ int	ft_philo_init(t_conditions *rules, int nb_philo)
 	rules->philo = malloc(sizeof(t_philosopher) * nb_philo);
 	if (!rules->philo)
 		return (1);
+	rules->verify_cleaning->philo_c = 1;
 	i = 0;
 	while (i < nb_philo)
 	{
@@ -91,6 +61,8 @@ int	ft_philo_init(t_conditions *rules, int nb_philo)
 
 int	ft_parsing(char **av, t_conditions *rules)
 {
+	if (ft_init_cleaning(rules))
+		return (1);
 	rules->nb_philo = ft_atoi(av[1]);
 	rules->time_death = ft_atoi(av[2]);
 	rules->time_eat = ft_atoi(av[3]);

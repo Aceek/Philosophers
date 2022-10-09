@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/06 23:48:28 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/09 05:40:22 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,16 @@ enum e_state
 	DIED
 };
 
+typedef struct s_cleaner
+{
+	int	forks_c;
+	int	malloc_forks_c;
+	int	writing_c;
+	int	eating_c;
+	int	philo_c;
+	int	thread_c;
+}		t_cleaner;
+
 typedef struct s_philosopher
 {
 	int					eating;
@@ -47,6 +57,7 @@ typedef struct s_philosopher
 
 typedef struct s_conditions
 {
+	int						init_fail;
 	int						nb_philo;
 	int						time_death;
 	int						time_eat;
@@ -55,14 +66,13 @@ typedef struct s_conditions
 	int						state;
 	long long				first_timer;
 	struct s_philosopher	*philo;
+	struct s_cleaner		*verify_cleaning;
 	pthread_mutex_t			m_eating;
 	pthread_mutex_t			*forks;
 	pthread_mutex_t			writing;
 }							t_conditions;
 
 //-----------------------initialisation.c-----------------------//
-void		ft_cleaning_mutex(t_conditions *rules);
-void		ft_cleaning(t_conditions *rules);
 int			ft_parsing(char **av, t_conditions *rules);
 int			ft_philo_init(t_conditions *rules, int nb_philo);
 int			ft_mutex_init(t_conditions *rules);
@@ -79,5 +89,10 @@ void		ft_writing(t_philosopher *philo, int state);
 void		ft_sleeping(long long time, t_conditions *rules);
 long long	ft_get_time(void);
 int			ft_atoi(char *str);
+
+//-----------------------cleaning.c-------------------------------//
+int			ft_init_cleaning(t_conditions *rules);
+void		ft_cleaning_mutex(t_conditions *rules);
+void		ft_cleaning(t_conditions *rules);
 
 #endif

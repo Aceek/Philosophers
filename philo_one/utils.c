@@ -36,7 +36,7 @@ int	ft_atoi(char *str)
 		nb = (nb * 10) + (str[i + count] - '0');
 		count++;
 	}
-	if (count > 10 || (nb * sig) < 0 || nb > INT_MAX)
+	if (count > 10 || (nb * sig) <= 0 || nb > INT_MAX)
 		return (-1);
 	return ((int)nb * sig);
 }

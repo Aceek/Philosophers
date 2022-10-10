@@ -97,7 +97,7 @@ void	ft_exit_clean(t_conditions *rules)
 		kill(philo[i].process_id, SIGKILL);
 		i++;
 	}
-	// pthread_join(rules->t_eat, NULL);
+	pthread_join(rules->t_eat, NULL);
 	sem_close(rules->writing);
 	sem_close(rules->ending);
 	sem_close(rules->all_eat);

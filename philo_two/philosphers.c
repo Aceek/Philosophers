@@ -16,11 +16,11 @@ void	*ft_state_check(void *philo)
 {
 	t_philosopher	*phi;
 	t_conditions	*rules;
-	// int				done;
+	int				done;
 
 	phi = (t_philosopher *)philo;
 	rules = phi->rules;
-	// done = 0;
+	done = 0;
 	while (!rules->state)
 	{
 		sem_wait(rules->m_eating);
@@ -32,11 +32,11 @@ void	*ft_state_check(void *philo)
 			// exit (0);
 		}
 		sem_post(rules->m_eating);
-		// if (!done && rules->nb_eat && phi->eat_count >= rules->nb_eat)
-		// {
-		// 	sem_post(rules->all_eat);
-		// 	done = 1;
-		// }
+		if (!done && rules->nb_eat && phi->eat_count >= rules->nb_eat)
+		{
+			sem_post(rules->all_eat);
+			done = 1;
+		}
 		usleep(50);
 	}
 	return (NULL);
@@ -63,7 +63,7 @@ void	ft_create_process(t_philosopher *philo)
 	t_conditions *rules;
 
 	rules = philo->rules;
-	// sem_wait(rules->all_eat);
+	sem_wait(rules->all_eat);
 	philo->time_last_meal = ft_get_time();
 	pthread_create(&(philo->thread_id), NULL, &ft_state_check, (void *)philo);
 	// verif thread init
@@ -90,8 +90,8 @@ void	*ft_check_eat_count(void *conditions)
 	t_conditions *rules;
 
 	rules = (t_conditions *)conditions;
-	i = -1;
-	while (++i < rules->nb_philo)
+	i = 0;
+	while (i < rules->nb_philo)
 	{
 		sem_wait(rules->all_eat);
 		i++;
@@ -123,7 +123,7 @@ void	ft_start(t_conditions *rules)
 			ft_create_process(&phi[i]);
 		i++;
 	}
-	// pthread_create(&(rules->t_eat), NULL, &ft_check_eat_count, (void *)rules);
+	pthread_create(&(rules->t_eat), NULL, &ft_check_eat_count, (void *)rules);
 	//verif thread init
 	return ;
 }

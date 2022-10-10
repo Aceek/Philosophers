@@ -24,6 +24,7 @@ int	main(int ac, char **av)
 	ft_start(&rules);
 	sem_wait(rules.ending);
 	rules.state = 1;
+	sem_post(rules.all_eat);
 	ft_exit_clean(&rules);
 	return (0);
 }

@@ -20,7 +20,7 @@ int	ft_semaphore_init(t_conditions *rules)
 	sem_unlink("ending_s");
 	sem_unlink("all_eat_s");
 	rules->forks = sem_open("forks_s", O_CREAT, S_IRWXU, rules->nb_philo);
-	rules->all_eat = sem_open("forks_s", O_CREAT, S_IRWXU, rules->nb_philo);
+	rules->all_eat = sem_open("all_eat_s", O_CREAT, S_IRWXU, rules->nb_philo);
 	rules->ending = sem_open("ending_s", O_CREAT, S_IRWXU, 1);
 	rules->m_eating = sem_open("eat_s", O_CREAT, S_IRWXU, 1);
 	rules->writing = sem_open("writing_s", O_CREAT, S_IRWXU, 1);

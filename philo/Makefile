@@ -6,11 +6,11 @@
 #    By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/21 14:37:12 by ilinhard          #+#    #+#              #
-#    Updated: 2022/10/09 05:49:58 by ilinhard         ###   ########.fr        #
+#    Updated: 2022/10/11 04:43:21 by ilinhard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME				=	philosphers
+NAME				=	philo
 
 HEAD				=	-I .
 

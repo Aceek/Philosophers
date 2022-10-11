@@ -6,17 +6,17 @@
 #    By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/21 14:37:12 by ilinhard          #+#    #+#              #
-#    Updated: 2022/10/11 04:43:31 by ilinhard         ###   ########.fr        #
+#    Updated: 2022/10/11 05:59:54 by ilinhard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME				=	philo_bonus
 
-HEAD				=	-I .
+HEAD				=	-I include_bonus
 
-SRCS				=	philosphers_bonus.c utils_bonus.c initialisation_bonus.c main_bonus.c cleaning_bonus.c
+SRCS				=	philosophers_bonus.c utils_bonus.c initialisation_bonus.c main_bonus.c cleaning_bonus.c
 
-OBJ					=	${SRCS:.c=.o}
+OBJ					=	${addprefix srcs/,${SRCS:.c=.o}}
 
 CC					=	gcc
 

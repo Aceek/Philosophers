@@ -6,17 +6,17 @@
 #    By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/21 14:37:12 by ilinhard          #+#    #+#              #
-#    Updated: 2022/10/11 04:43:21 by ilinhard         ###   ########.fr        #
+#    Updated: 2022/10/11 05:58:54 by ilinhard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME				=	philo
 
-HEAD				=	-I .
+HEAD				=	-I include
 
-SRCS				=	philosphers.c utils.c initialisation.c main.c cleaning.c
+SRCS				=	philosophers.c utils.c initialisation.c main.c cleaning.c
 
-OBJ					=	${SRCS:.c=.o}
+OBJ					=	${addprefix srcs/,${SRCS:.c=.o}}
 
 CC					=	gcc
 

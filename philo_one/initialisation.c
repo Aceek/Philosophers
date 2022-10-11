@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:39:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/09 05:40:13 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/11 04:10:17 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ int	ft_parsing(char **av, t_conditions *rules)
 	rules->time_eat = ft_atoi(av[3]);
 	rules->time_sleep = ft_atoi(av[4]);
 	rules->state = 0;
-	if (rules->nb_philo < 1 || rules->time_death < 0
-		|| rules->time_eat < 0 || rules->time_sleep < 0)
+	if (rules->nb_philo < 1 || rules->time_death < 20
+		|| rules->time_eat < 20 || rules->time_sleep < 20)
 		return (1);
 	if (av[5])
 		rules->nb_eat = ft_atoi(av[5]);

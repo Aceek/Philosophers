@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosphers.c                                      :+:      :+:    :+:   */
+/*   philosphers_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 07:40:04 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/09 06:59:00 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/11 04:03:07 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "philosopher_bonus.h"
 
 void	*ft_state_check(void *philo)
 {
@@ -27,9 +27,8 @@ void	*ft_state_check(void *philo)
 		if ((ft_get_time() - phi->time_last_meal) > rules->time_death)
 		{
 			ft_writing(philo, DIED);
+			rules->state = 1;
 			sem_post(rules->ending);
-			// rules->state = 1;
-			// exit (0);
 		}
 		sem_post(rules->m_eating);
 		if (!done && rules->nb_eat && phi->eat_count >= rules->nb_eat)
@@ -42,10 +41,12 @@ void	*ft_state_check(void *philo)
 	return (NULL);
 }
 
-void	ft_eat(t_philosopher *philo ,t_conditions *rules)
+int	ft_eat(t_philosopher *philo, t_conditions *rules)
 {
 	sem_wait(rules->forks);
 	ft_writing(philo, FORK);
+	if (rules->nb_philo < 2)
+		return (1);
 	sem_wait(rules->forks);
 	ft_writing(philo, FORK);
 	sem_wait(rules->m_eating);
@@ -56,42 +57,42 @@ void	ft_eat(t_philosopher *philo ,t_conditions *rules)
 	ft_sleeping(rules->time_eat, rules);
 	sem_post(rules->forks);
 	sem_post(rules->forks);
+	return (0);
 }
 
 void	ft_create_process(t_philosopher *philo)
 {
-	t_conditions *rules;
+	t_conditions	*rules;
 
+	if (philo->id % 2)
+		usleep(30000);
 	rules = philo->rules;
 	sem_wait(rules->all_eat);
 	philo->time_last_meal = ft_get_time();
+	pthread_create(&(philo->t_cleaner), NULL, &ft_end_clean, (void *)rules);
 	pthread_create(&(philo->thread_id), NULL, &ft_state_check, (void *)philo);
-	// verif thread init
-	pthread_detach(philo->thread_id);
-	if (philo->id % 2)
-		usleep(15000);
 	while (!rules->state)
 	{
-		ft_eat(philo, rules);
+		if (ft_eat(philo, rules))
+			ft_sleeping((rules->time_death * 2), rules);
 		if (rules->state)
 			break ;
 		ft_writing(philo, SLEEPING);
 		ft_sleeping(rules->time_sleep, rules);
 		ft_writing(philo, THINKING);
 	}
-	// free(philo);
-	// pthread_join(philo->thread_id, NULL);
+	ft_exit(rules, philo);
 	exit (0);
 }
 
 void	*ft_check_eat_count(void *conditions)
 {
-	int	i;
-	t_conditions *rules;
+	int				i;
+	t_conditions	*rules;
 
 	rules = (t_conditions *)conditions;
 	i = 0;
-	while (i < rules->nb_philo)
+	while (!rules->state && i < rules->nb_philo)
 	{
 		sem_wait(rules->all_eat);
 		i++;
@@ -105,25 +106,26 @@ void	*ft_check_eat_count(void *conditions)
 	return (NULL);
 }
 
-
-void	ft_start(t_conditions *rules)
+int	ft_start(t_conditions *rules)
 {
-	int	i;
-	t_philosopher *phi;
+	int				i;
+	t_philosopher	*phi;
 
 	phi = rules->philo;
 	rules->first_timer = ft_get_time();
 	i = 0;
 	while (i < rules->nb_philo)
 	{
-		phi[i].process_id = fork(); 
+		phi[i].process_id = fork();
 		if (phi[i].process_id < 0)
-			return ;
+			return (1);
 		if (phi[i].process_id == 0)
 			ft_create_process(&phi[i]);
 		i++;
 	}
-	pthread_create(&(rules->t_eat), NULL, &ft_check_eat_count, (void *)rules);
-	//verif thread init
-	return ;
+	if (pthread_create(&(rules->t_eat), NULL,
+			&ft_check_eat_count, (void *)rules))
+		return (1);
+	sem_wait(rules->cleaner);
+	return (0);
 }

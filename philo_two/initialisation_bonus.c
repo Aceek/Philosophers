@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initialisation.c                                   :+:      :+:    :+:   */
+/*   initialisation_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:39:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/09 06:09:00 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/11 04:11:05 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "philosopher_bonus.h"
 
 int	ft_semaphore_init(t_conditions *rules)
 {
@@ -19,14 +19,16 @@ int	ft_semaphore_init(t_conditions *rules)
 	sem_unlink("writing_s");
 	sem_unlink("ending_s");
 	sem_unlink("all_eat_s");
+	sem_unlink("cleaner_s");
 	rules->forks = sem_open("forks_s", O_CREAT, S_IRWXU, rules->nb_philo);
 	rules->all_eat = sem_open("all_eat_s", O_CREAT, S_IRWXU, rules->nb_philo);
+	rules->cleaner = sem_open("cleaner_s", O_CREAT, S_IRWXU, 1);
 	rules->ending = sem_open("ending_s", O_CREAT, S_IRWXU, 1);
 	rules->m_eating = sem_open("eat_s", O_CREAT, S_IRWXU, 1);
 	rules->writing = sem_open("writing_s", O_CREAT, S_IRWXU, 1);
 	if (rules->forks == SEM_FAILED || rules->m_eating == SEM_FAILED
 		|| rules->writing == SEM_FAILED || rules->ending == SEM_FAILED
-		|| rules->all_eat == SEM_FAILED)
+		|| rules->all_eat == SEM_FAILED || rules->cleaner == SEM_FAILED)
 		return (1);
 	return (0);
 }
@@ -57,8 +59,8 @@ int	ft_parsing(char **av, t_conditions *rules)
 	rules->time_eat = ft_atoi(av[3]);
 	rules->time_sleep = ft_atoi(av[4]);
 	rules->state = 0;
-	if (rules->nb_philo < 1 || rules->time_death < 0
-		|| rules->time_eat < 0 || rules->time_sleep < 0)
+	if (rules->nb_philo < 1 || rules->time_death < 10
+		|| rules->time_eat < 10 || rules->time_sleep < 10)
 		return (1);
 	if (av[5])
 		rules->nb_eat = ft_atoi(av[5]);

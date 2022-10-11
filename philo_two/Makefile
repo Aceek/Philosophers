@@ -6,15 +6,15 @@
 #    By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/21 14:37:12 by ilinhard          #+#    #+#              #
-#    Updated: 2022/10/07 00:51:27 by ilinhard         ###   ########.fr        #
+#    Updated: 2022/10/11 03:30:43 by ilinhard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME				=	philosphers
+NAME				=	philosphers_bonus
 
 HEAD				=	-I .
 
-SRCS				=	philosphers.c utils.c initialisation.c main.c
+SRCS				=	philosphers_bonus.c utils_bonus.c initialisation_bonus.c main_bonus.c cleaning_bonus.c
 
 OBJ					=	${SRCS:.c=.o}
 

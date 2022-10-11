@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/09 06:52:49 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/11 03:25:59 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "philosopher_bonus.h"
 
 int	ft_atoi(char *str)
 {
@@ -79,29 +79,11 @@ void	ft_writing(t_philosopher *philo, int state)
 		str = "is thinking\n";
 	else if (state == DIED)
 		str = "died\n";
-	printf("%lli %d %s", time_diff, (philo->id + 1), str);
-	if (state != DIED)
-		sem_post(philo->rules->writing);
-}
-
-void	ft_exit_clean(t_conditions *rules)
-{
-	int				i;
-	t_philosopher	*philo;
-
-	i = 0;
-	philo = rules->philo;
-	// waitpid(-1, NULL, 0);
-	while (i < rules->nb_philo)
+	if (philo->rules->state)
 	{
-		kill(philo[i].process_id, SIGKILL);
-		i++;
+		sem_post(philo->rules->writing);
+		return ;
 	}
-	pthread_join(rules->t_eat, NULL);
-	sem_close(rules->writing);
-	sem_close(rules->ending);
-	sem_close(rules->all_eat);
-	sem_close(rules->m_eating);
-	sem_close(rules->forks);
-	free(philo);
+	printf("%lli %d %s", time_diff, (philo->id + 1), str);
+	sem_post(philo->rules->writing);
 }

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 05:17:18 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/09 06:39:46 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/11 03:11:53 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "philosopher_bonus.h"
 
 int	main(int ac, char **av)
 {
@@ -21,10 +21,10 @@ int	main(int ac, char **av)
 	if (ft_parsing(av, &rules))
 		return (write(2, "Error parsing args / init args\n", 31), 1);
 	sem_wait(rules.ending);
-	ft_start(&rules);
+	if (ft_start(&rules))
+		sem_post(rules.ending);
 	sem_wait(rules.ending);
-	rules.state = 1;
-	sem_post(rules.all_eat);
+	sem_post(rules.cleaner);
 	ft_exit_clean(&rules);
 	return (0);
 }

@@ -6,11 +6,23 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:39:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/11 05:25:44 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/12 03:05:40 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher_bonus.h"
+
+void	ft_empty_sem(t_conditions *rules)
+{
+	int	i;
+
+	i = 0;
+	while (i < rules->nb_philo)
+	{
+		sem_wait(rules->all_eat);
+		i++;
+	}
+}
 
 int	ft_semaphore_init(t_conditions *rules)
 {
@@ -30,6 +42,7 @@ int	ft_semaphore_init(t_conditions *rules)
 		|| rules->writing == SEM_FAILED || rules->ending == SEM_FAILED
 		|| rules->all_eat == SEM_FAILED || rules->cleaner == SEM_FAILED)
 		return (1);
+	ft_empty_sem(rules);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/11 04:02:25 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/12 03:01:29 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_conditions
 }							t_conditions;
 
 //-----------------------initialisation.c-----------------------//
+void		ft_empty_sem(t_conditions *rules);
 int			ft_semaphore_init(t_conditions *rules);
 int			ft_philo_init(t_conditions *rules, int nb_philo);
 int			ft_parsing(char **av, t_conditions *rules);

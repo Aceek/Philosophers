@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosphers_bonus.c                                :+:      :+:    :+:   */
+/*   philosophers_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 07:40:04 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/11 04:03:07 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/12 03:07:06 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,23 @@ void	*ft_state_check(void *philo)
 
 int	ft_eat(t_philosopher *philo, t_conditions *rules)
 {
-	sem_wait(rules->forks);
-	ft_writing(philo, FORK);
-	if (rules->nb_philo < 2)
-		return (1);
-	sem_wait(rules->forks);
-	ft_writing(philo, FORK);
-	sem_wait(rules->m_eating);
-	ft_writing(philo, EATING);
-	philo->eat_count += 1;
-	philo->time_last_meal = ft_get_time();
-	sem_post(rules->m_eating);
-	ft_sleeping(rules->time_eat, rules);
-	sem_post(rules->forks);
-	sem_post(rules->forks);
+	if (!rules->state)
+	{
+		sem_wait(rules->forks);
+		ft_writing(philo, FORK);
+		if (rules->nb_philo < 2)
+			return (1);
+		sem_wait(rules->forks);
+		ft_writing(philo, FORK);
+		sem_wait(rules->m_eating);
+		ft_writing(philo, EATING);
+		philo->eat_count += 1;
+		philo->time_last_meal = ft_get_time();
+		sem_post(rules->m_eating);
+		ft_sleeping(rules->time_eat, rules);
+		sem_post(rules->forks);
+		sem_post(rules->forks);
+	}
 	return (0);
 }
 
@@ -64,10 +67,9 @@ void	ft_create_process(t_philosopher *philo)
 {
 	t_conditions	*rules;
 
+	rules = philo->rules;
 	if (philo->id % 2)
 		usleep(30000);
-	rules = philo->rules;
-	sem_wait(rules->all_eat);
 	philo->time_last_meal = ft_get_time();
 	pthread_create(&(philo->t_cleaner), NULL, &ft_end_clean, (void *)rules);
 	pthread_create(&(philo->thread_id), NULL, &ft_state_check, (void *)philo);
@@ -81,6 +83,7 @@ void	ft_create_process(t_philosopher *philo)
 		ft_sleeping(rules->time_sleep, rules);
 		ft_writing(philo, THINKING);
 	}
+	printf("%d j'ai mange : %d\n", philo->id + 1, philo->eat_count);
 	ft_exit(rules, philo);
 	exit (0);
 }

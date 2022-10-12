@@ -6,7 +6,7 @@
 #    By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/21 14:37:12 by ilinhard          #+#    #+#              #
-#    Updated: 2022/10/11 05:58:54 by ilinhard         ###   ########.fr        #
+#    Updated: 2022/10/12 02:04:38 by ilinhard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,10 @@ clean				:
 
 fclean				:	clean
 					@rm -rf ${NAME}
-					
+
+bonus				:
+					make -C ../philo_bonus
+
 re					:	fclean all
 
 .PHONY				:	all clean fclean re

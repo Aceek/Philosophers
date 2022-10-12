@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 07:40:04 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/12 03:07:06 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/12 03:13:34 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	ft_create_process(t_philosopher *philo)
 		ft_sleeping(rules->time_sleep, rules);
 		ft_writing(philo, THINKING);
 	}
-	printf("%d j'ai mange : %d\n", philo->id + 1, philo->eat_count);
 	ft_exit(rules, philo);
 	exit (0);
 }

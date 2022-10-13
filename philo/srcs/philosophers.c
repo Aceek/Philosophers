@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 00:43:38 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/12 02:57:34 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/13 07:57:48 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ int	ft_eat(t_philosopher *philo, t_conditions *rules)
 	pthread_mutex_lock(&rules->forks[philo->rfork]);
 	ft_writing(philo, FORK);
 	pthread_mutex_lock(&rules->m_eating);
-	ft_writing(philo, EATING);
 	philo->time_last_meal = ft_get_time();
+	philo->eat_count++;
+	ft_writing(philo, EATING);
 	pthread_mutex_unlock(&rules->m_eating);
 	ft_sleeping(rules->time_eat, rules);
-	philo->eat_count++;
 	ft_writing(philo, SLEEPING);
-	pthread_mutex_unlock(&rules->forks[philo->lfork]);
 	pthread_mutex_unlock(&rules->forks[philo->rfork]);
+	pthread_mutex_unlock(&rules->forks[philo->lfork]);
 	return (0);
 }
 
@@ -84,6 +84,8 @@ void	ft_state_check(t_philosopher *philo, t_conditions *rules)
 		{
 			ft_writing(&philo[i], DIED);
 			rules->state = 1;
+			pthread_mutex_unlock(&rules->m_eating);
+			return ;
 		}
 		pthread_mutex_unlock(&rules->m_eating);
 		if (rules->nb_eat && ft_check_nb_eat(philo, rules))
@@ -115,7 +117,9 @@ void	ft_start(t_conditions *rules)
 			return ;
 		}
 		rules->verify_cleaning->thread_c++;
+		pthread_mutex_lock(&rules->m_eating);
 		philo[i].time_last_meal = ft_get_time();
+		pthread_mutex_unlock(&rules->m_eating);
 		i++;
 	}
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/09 05:40:22 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/13 02:53:07 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_conditions
 	pthread_mutex_t			m_eating;
 	pthread_mutex_t			*forks;
 	pthread_mutex_t			writing;
+	pthread_mutex_t			time; // test
 }							t_conditions;
 
 //-----------------------initialisation.c-----------------------//

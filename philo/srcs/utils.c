@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/13 07:57:45 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/13 08:51:02 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ long long	ft_get_time(void)
 void	ft_sleeping(long long time, t_conditions *rules)
 {
 	long long	i;
-
 	i = ft_get_time();
 	while (!rules->state)
 	{
@@ -68,6 +67,11 @@ void	ft_writing(t_philosopher *philo, int state)
 	char		*str;
 
 	pthread_mutex_lock(&philo->rules->writing);
+	if (philo->rules->state)
+	{
+		pthread_mutex_unlock(&philo->rules->writing);
+		return ;
+	}
 	time_diff = ft_get_time() - philo->rules->first_timer;
 	if (state == FORK)
 		str = "has taken a fork\n";
@@ -80,12 +84,7 @@ void	ft_writing(t_philosopher *philo, int state)
 	else if (state == DIED)
 	{
 		str = "died\n";
-		philo->rules->state = 1;
-	}
-	if (philo->rules->state)
-	{
-		pthread_mutex_unlock(&philo->rules->writing);
-		return ;
+		// philo->rules->state = 1;
 	}
 	printf("%lli %d %s", time_diff, (philo->id + 1), str);
 	pthread_mutex_unlock(&philo->rules->writing);

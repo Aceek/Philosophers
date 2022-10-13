@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 00:43:38 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/13 07:57:48 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/13 08:57:55 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,21 @@ void	ft_state_check(t_philosopher *philo, t_conditions *rules)
 		if (ft_get_time() - philo[i].time_last_meal > (rules->time_death))
 		{
 			ft_writing(&philo[i], DIED);
+
+
 			rules->state = 1;
 			pthread_mutex_unlock(&rules->m_eating);
 			return ;
 		}
-		pthread_mutex_unlock(&rules->m_eating);
 		if (rules->nb_eat && ft_check_nb_eat(philo, rules))
 		{
+			// pthread_mutex_lock(&rules->time);
 			rules->state = 1;
+			// pthread_mutex_unlock(&rules->time);
+			pthread_mutex_unlock(&rules->m_eating);
 			break ;
 		}
+		pthread_mutex_unlock(&rules->m_eating);
 		i++;
 		if (i >= rules->nb_philo)
 			i = 0;

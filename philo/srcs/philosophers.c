@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 00:43:38 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/14 06:26:13 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/14 07:06:09 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	*ft_routine(void *arg)
 	philo = (t_philosopher *)arg;
 	rules = philo->rules;
 	if (philo->id % 2)
-		usleep(1000);
+		usleep(10000);
 	while (1)
 	{
 		if (ft_eat(philo, rules))
@@ -53,7 +53,7 @@ void	*ft_routine(void *arg)
 		if (ft_writing(philo, THINKING))
 			return (NULL);
 		if (rules->nb_philo % 2)
-			usleep(1000);
+			usleep(10000);
 	}
 	return (NULL);
 }

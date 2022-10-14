@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/14 06:33:32 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/14 06:57:35 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,9 @@ int	ft_is_died(t_conditions *rules)
 {
 	pthread_mutex_lock(&rules->time);
 	if (rules->state == 1)
-	{
-		pthread_mutex_unlock(&rules->time);
-		return (1);
-	}
+		return (pthread_mutex_unlock(&rules->time), 1);
 	else
-	{
-		pthread_mutex_unlock(&rules->time);
-		return (0);
-	}
+		return (pthread_mutex_unlock(&rules->time), 0);
 }
 
 void	ft_sleeping(long long time, t_conditions *rules)
@@ -73,7 +67,7 @@ void	ft_sleeping(long long time, t_conditions *rules)
 	{
 		if ((ft_get_time() - i) >= time)
 			break ;
-		usleep(100);
+		usleep(60000);
 	}
 }
 

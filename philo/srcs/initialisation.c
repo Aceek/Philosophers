@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:39:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/13 08:58:05 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/14 06:30:55 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,24 @@ int	ft_mutex_init(t_conditions *rules)
 	if (pthread_mutex_init(&rules->m_eating, NULL))
 		return (1);
 	rules->verify_cleaning->eating_c = 1;
-	// test
-	// if (pthread_mutex_init(&rules->time, NULL))
-		// return (1);
+	if (pthread_mutex_init(&rules->time, NULL))
+		return (1);
+	rules->verify_cleaning->time_c = 1;
 	return (0);
+}
+
+void	ft_attrib_fork(t_conditions *rules, int i)
+{
+	if (!(i % 2))
+	{
+		rules->philo[i].lfork = i;
+		rules->philo[i].rfork = (i + 1) % rules->nb_philo;
+	}
+	else
+	{
+		rules->philo[i].lfork = (i + 1) % rules->nb_philo;
+		rules->philo[i].rfork = i;
+	}
 }
 
 int	ft_philo_init(t_conditions *rules, int nb_philo)
@@ -53,19 +67,7 @@ int	ft_philo_init(t_conditions *rules, int nb_philo)
 		rules->philo[i].eating = 0;
 		rules->philo[i].time_last_meal = 0;
 		rules->philo[i].id = i;
-		// rules->philo[i].lfork = i;
-		// rules->philo[i].rfork = (i + 1) % nb_philo;
-		// ft_init_fork(&rules->philo[i], i);
-	if (!(i % 2))
-	{
-		rules->philo[i].lfork = i;
-		rules->philo[i].rfork = (i + 1) % rules->nb_philo;
-	}
-	else
-	{
-		rules->philo[i].lfork = (i + 1) % rules->nb_philo;
-		rules->philo[i].rfork = i;
-	}
+		ft_attrib_fork(rules, i);
 		rules->philo[i].eat_count = 0;
 		rules->philo[i].rules = rules;
 		i++;

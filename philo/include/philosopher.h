@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 07:37:08 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/13 02:53:07 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/14 06:34:25 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_cleaner
 	int	eating_c;
 	int	philo_c;
 	int	thread_c;
+	int	time_c;
 }		t_cleaner;
 
 typedef struct s_philosopher
@@ -70,10 +71,11 @@ typedef struct s_conditions
 	pthread_mutex_t			m_eating;
 	pthread_mutex_t			*forks;
 	pthread_mutex_t			writing;
-	pthread_mutex_t			time; // test
+	pthread_mutex_t			time;
 }							t_conditions;
 
 //-----------------------initialisation.c-----------------------//
+void		ft_attrib_fork(t_conditions *rules, int i);
 int			ft_parsing(char **av, t_conditions *rules);
 int			ft_philo_init(t_conditions *rules, int nb_philo);
 int			ft_mutex_init(t_conditions *rules);
@@ -86,12 +88,14 @@ int			ft_check_nb_eat(t_philosopher *philo, t_conditions *rules);
 void		*ft_routine(void *arg);
 
 //-----------------------Utils.c-------------------------------//
-void		ft_writing(t_philosopher *philo, int state);
 void		ft_sleeping(long long time, t_conditions *rules);
 long long	ft_get_time(void);
+int			ft_writing(t_philosopher *philo, int state);
 int			ft_atoi(char *str);
 
 //-----------------------cleaning.c-------------------------------//
+int			ft_unlock_mutex(t_philosopher *philo,
+				t_conditions *rules, int lock);
 int			ft_init_cleaning(t_conditions *rules);
 void		ft_cleaning_mutex(t_conditions *rules);
 void		ft_cleaning(t_conditions *rules);

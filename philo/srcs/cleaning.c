@@ -6,11 +6,23 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 05:36:22 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/09 05:38:13 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/14 06:31:39 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
+
+int	ft_unlock_mutex(t_philosopher *philo, t_conditions *rules, int lock)
+{
+	if (lock == 1)
+		pthread_mutex_unlock(&rules->forks[philo->lfork]);
+	else if (lock == 2)
+	{
+		pthread_mutex_unlock(&rules->forks[philo->rfork]);
+		pthread_mutex_unlock(&rules->forks[philo->lfork]);
+	}
+	return (1);
+}
 
 int	ft_init_cleaning(t_conditions *rules)
 {
@@ -25,6 +37,7 @@ int	ft_init_cleaning(t_conditions *rules)
 	rules->verify_cleaning->forks_c = 0;
 	rules->verify_cleaning->philo_c = 0;
 	rules->verify_cleaning->thread_c = 0;
+	rules->verify_cleaning->time_c = 0;
 	return (0);
 }
 
@@ -38,6 +51,8 @@ void	ft_cleaning_mutex(t_conditions *rules)
 		pthread_mutex_destroy(&rules->m_eating);
 	if (rules->verify_cleaning->writing_c)
 		pthread_mutex_destroy(&rules->writing);
+	if (rules->verify_cleaning->time_c)
+		pthread_mutex_destroy(&rules->time);
 	i = 0;
 	while (i < rules->verify_cleaning->forks_c)
 	{

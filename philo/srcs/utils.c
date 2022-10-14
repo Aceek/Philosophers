@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/13 08:51:02 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/14 06:33:32 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,29 +49,42 @@ long long	ft_get_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	ft_sleeping(long long time, t_conditions *rules)
+int	ft_is_died(t_conditions *rules)
 {
-	long long	i;
-	i = ft_get_time();
-	while (!rules->state)
+	pthread_mutex_lock(&rules->time);
+	if (rules->state == 1)
 	{
-		if ((ft_get_time() - i) >= time)
-			break ;
-		usleep(50);
+		pthread_mutex_unlock(&rules->time);
+		return (1);
+	}
+	else
+	{
+		pthread_mutex_unlock(&rules->time);
+		return (0);
 	}
 }
 
-void	ft_writing(t_philosopher *philo, int state)
+void	ft_sleeping(long long time, t_conditions *rules)
+{
+	long long	i;
+
+	i = ft_get_time();
+	while (!ft_is_died(rules))
+	{
+		if ((ft_get_time() - i) >= time)
+			break ;
+		usleep(100);
+	}
+}
+
+int	ft_writing(t_philosopher *philo, int state)
 {
 	long long	time_diff;
 	char		*str;
 
 	pthread_mutex_lock(&philo->rules->writing);
-	if (philo->rules->state)
-	{
-		pthread_mutex_unlock(&philo->rules->writing);
-		return ;
-	}
+	if (ft_is_died(philo->rules))
+		return (pthread_mutex_unlock(&philo->rules->writing), 1);
 	time_diff = ft_get_time() - philo->rules->first_timer;
 	if (state == FORK)
 		str = "has taken a fork\n";
@@ -84,8 +97,11 @@ void	ft_writing(t_philosopher *philo, int state)
 	else if (state == DIED)
 	{
 		str = "died\n";
-		// philo->rules->state = 1;
+		pthread_mutex_lock(&philo->rules->time);
+		philo->rules->state = 1;
+		pthread_mutex_unlock(&philo->rules->time);
 	}
 	printf("%lli %d %s", time_diff, (philo->id + 1), str);
 	pthread_mutex_unlock(&philo->rules->writing);
+	return (0);
 }

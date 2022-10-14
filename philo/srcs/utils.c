@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/14 07:32:47 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/14 08:12:50 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_sleeping(long long time, t_conditions *rules)
 	{
 		if ((ft_get_time() - i) >= time)
 			break ;
-		usleep(100);
+		usleep(1000);
 	}
 }
 

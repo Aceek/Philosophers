@@ -6,7 +6,7 @@
 #    By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/21 14:37:12 by ilinhard          #+#    #+#              #
-#    Updated: 2022/10/12 02:03:57 by ilinhard         ###   ########.fr        #
+#    Updated: 2022/10/14 07:12:48 by ilinhard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJ					=	${addprefix srcs/,${SRCS:.c=.o}}
 
 CC					=	gcc
 
-CFLAGS				=	-Wall -Werror -Wextra -g -pthread
+CFLAGS				=	-Wall -Werror -Wextra -g -pthread -fsanitize=thread
 
 ${NAME}				:	${OBJ}
 					${CC} ${CFLAGS} ${OBJ} -o ${NAME}

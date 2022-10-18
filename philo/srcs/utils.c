@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 02:37:30 by ilinhard          #+#    #+#             */
-/*   Updated: 2022/10/14 08:12:50 by ilinhard         ###   ########.fr       */
+/*   Updated: 2022/10/18 22:37:23 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	ft_atoi(char *str)
 
 long long	ft_get_time(void)
 {
-	static struct timeval	tv;
+	struct timeval	current;
 
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	gettimeofday(&current, NULL);
+	return ((current.tv_sec * 1000) + (current.tv_usec / 1000));
 }
 
 int	ft_is_died(t_conditions *rules)
@@ -54,8 +54,7 @@ int	ft_is_died(t_conditions *rules)
 	pthread_mutex_lock(&rules->time);
 	if (rules->state == 1)
 		return (pthread_mutex_unlock(&rules->time), 1);
-	else
-		return (pthread_mutex_unlock(&rules->time), 0);
+	return (pthread_mutex_unlock(&rules->time), 0);
 }
 
 void	ft_sleeping(long long time, t_conditions *rules)
